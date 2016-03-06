@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Bitcoin Trader Zf</string>
+  <string name="empty"></string>
+
+  <string name="loading_info">ロード中&#8230;</string>
+  <string name="connecting_info">接続中&#8230;</string>
+  <string name="connection_failed">接続できません。インターネット接続を確認して、もう一度試してください。</string>
+  <string name="bitcoin_order_fragment_empty_text">未執行の注文はありません。</string>
+  <string name="bitcoin_action_buy">買い</string>
+  <string name="bitcoin_action_sell">売り</string>
+  <string name="bitcoin_action_demo_info">デモの終了</string>
+  <string name="button_retry">再試行</string>
+  <string name="button_delete_order_text">次の注文を削除してもよろしいですか:\n%1$s (数量: %2$s)</string>
+  <string name="button_delete_order_confirm">確認</string>
+  <string name="button_delete_order_cancel">キャンセル</string>
+  
+  <string name="order_deleted">注文を削除しました</string>
+  <string name="order_delete_failed">注文の削除に失敗しました</string>
+
+  <string name="initial_setup_headline">初期設定</string>
+  <string name="initial_setup_info_text">このアプリを使用するには、Zaif.jp のアカウントで接続する必要があります。\nzaif.jp (<a href="https://zaif.jp/api_keys">https://zaif.jp/api_keys</a>) の \"アカウント\" - \"API Keys\" にある 2 つの項目を使用します。\n\"Info\" と \"Trade\" の権限を設定する必要があります。</string>
+  <string name="initial_setup_manual_qrinfo">QR コードをクリックして \"アプリケーション アクセス\" キーをスキャンするか、直接入力してください</string>
+  <string name="initial_setup_manual_info">または \"拡張 API キー生成\" で生成されたキーペアを入力します</string>
+  <string name="initial_setup_manual_setupbutton">実行</string>
+  <string name="initial_setup_manual_key_label">キー</string>
+  <string name="initial_setup_manual_secretkey_label">シークレットキー</string>
+  <string name="initial_setup_demo_label">このアプリが役立つかどうか不明な場合は、ここでデモを始めることができます。</string>
+  <string name="initial_setup_demo_button">デモを開始</string>
+  <string name="initial_setup_demo">デモの開始中</string>
+  <string name="initial_setup_success">ユーザー名 %s の設定が完了しました</string>
+  <string name="initial_setup_testing">証明書のテスト中</string>
+  <string name="initial_setup_failed_wrong_credentials">証明書が間違っているようです</string>
+  <string name="initial_setup_failed_key_expired">キーが期限切れです。</string>
+  <string name="initial_setup_failed_key_invalid">キーが正しくありません。</string>
+  <string name="initial_setup_failed_not_enough_permissions">アクセス許可が不足しています。</string>
+  
+  <string name="wallet_history_title">ウォレット履歴</string>
+  <string name="wallet_history_currency_spinner_label">通貨を選択:</string>
+  <string name="wallet_history_out">出金</string>
+  <string name="wallet_history_in">入金</string>
+  <string name="wallet_history_fee">手数料</string>
+  <string name="wallet_history_earned">売り</string>
+  <string name="wallet_history_spent">買い</string>
+  <string name="wallet_history_withdraw">払出</string>
+  <string name="wallet_history_deposit">預入</string>
+  <string name="wallet_history_balance">残高:</string>
+  <string name="wallet_history_date">日付:</string>
+  <string name="wallet_history_price">価格:</string>
+  <string name="wallet_history_info_bought">BTC 買い: %1$s , %2$s</string>
+  <string name="wallet_history_info_sold">BTC 売り: %1$s , %2$s</string>
+
+  <string name="price_chart_title">価格チャート</string>
+  <string name="price_chart_symbol">シンボル</string>
+  <string name="price_chart_low">安値</string>
+  <string name="price_chart_high">高値</string>
+  <string name="price_chart_last">終値</string>
+  <string name="price_chart_vol">出来高</string>
+  <string name="price_chart_avg">平均</string>
+  <string name="price_chart_ask">Ask</string>
+  <string name="price_chart_bid">Bid</string>
+  <string name="price_chart_failed">bitcoincharts.com から価格チャートをロードできませんでした。これは一時的な問題のはずです</string>
+  <string name="price_chart_title_zf">価格チャート Zaif</string>
+    
+  <string name="account_info">アカウント</string>
+  <string name="account_info_trade_fee_label">取引手数料:</string>
+  <string name="price_info">ティッカー</string>
+  <string name="price_info_low_label">安値: </string>
+  <string name="price_info_high_label">高値: </string>
+  <string name="price_info_ask_label">Ask: </string>
+  <string name="price_info_bid_label">Bid: </string>
+  <string name="price_info_volume_label">出来高: </string>
+  <string name="refresh_title">更新</string>
+
+  <string name="price_chart_detail_title">価格チャート詳細</string>
+  <string name="price_chart_detail_open_in_new_window">ブラウザーで開く</string>
+
+  <string name="select_currency_title">通貨を選択</string>
+
+  <string name="notify_order_executed_title">注文を執行しました</string>
+  <string name="notify_order_executed_text">注文を執行しました %1$s (%2$s / %3$s)</string>
+  <string name="notify_update_success_text">正常に更新しました!</string>
+  <string name="notify_update_failed_title">更新に失敗しました!</string>
+  <string name="notify_update_failed_text">エラーが発生しました</string>
+
+  <string name="placeorder_title">注文発行</string>
+  <string name="place_order_fragment_type_label">注文種類</string>
+  <string name="place_order_fragment_amount_label">数量</string>
+  <string name="place_order_fragment_market_order">成行注文</string>
+  <string name="place_order_fragment_price_label">価格</string>
+  <string name="place_order_fragment_total_label">合計</string>
+  <string name="place_order_fragment_estimatedfee_label">見積手数料</string>
+  <string name="place_order_perform">注文発行</string>
+  <string name="place_order_cancel">キャンセル</string>
+  <string name="place_order_submitting">注文の送信中</string>
+  <string name="place_order_invalid">入力を検証してください</string>
+  <string name="place_order_success">注文を作成しました</string>
+  <string name="place_order_failed">注文を作成できませんでした</string>
+  <string name="place_order_failed_demo">デモモードでは注文は作成できません。</string>
+
+
+  <string name="market_depth_title">マーケット板</string>
+  <string name="market_depth_asks_graph_title">Asks</string>
+  <string name="market_depth_bids_graph_title">Bids</string>
+    
+  <string name="about_title">アプリについて</string>
+  <string name="about_author_twitter_title">作者の Twitter</string>
+  <string name="about_license">ライセンス</string>
+  <string name="about_license_summary">このアプリは GPLv3 ライセンスの下で配布されます</string>
+  <string name="about_credits_bitcoinwallet_title">"このアプリは 'bitcoin-wallet' を使用しています"</string>
+  <string name="about_credits_xchange_title">"このアプリは 'xchange' を使用しています"</string>
+  <string name="about_credits_zxing_title">"このアプリは 'zxing' を使用しています"</string>
+  <string name="about_credits_graphview_title">"このアプリは 'graphview' を使用しています"</string>
+    
+  <string name="preferences_title">設定</string>
+  <string name="preferences_category_mtgox">Zaif.jp</string>
+  <string name="preferences_mtgox_api_key_summary">Zaif.jp API キー</string>
+  <string name="preferences_mtgox_api_key_title">API キー</string>
+  <string name="preferences_mtgox_secret_key_summary">Zaif.jp シークレットキー</string>
+  <string name="preferences_mtgox_secret_key_title">シークレットキー</string>
+  <string name="preferences_category_labs">実験</string>
+  <string name="preferences_category_general">全般設定</string>
+  <string name="preferences_general_update_summary">値を設定してください</string>
+  <string name="preferences_general_update_title">次の間隔で自動更新します&#8230;</string>
+  <string name="preferences_general_notify_on_update_summary">更新が成功した場合にも通知します</string>
+  <string name="preferences_general_notify_on_update_title">成功時に通知</string>
+  <string name="preferences_general_sound_title">サウンドを再生</string>
+  <string name="preferences_general_sound_summary">通知が作成される場合にサウンドを再生します。</string>
+  <string name="preferences_general_vibrate_title">振動</string>
+  <string name="preferences_general_vibrate_summary">通知が作成される場合に振動します。</string>
+  <string name="preferences_trailing_stop_enable_selling_title">ロス ストップ リミットで売り</string>
+  <string name="preferences_trailing_stop_enable_selling_summary">トレーリング ストップ リミットに達した場合に売ります。</string>
+  <string name="preferences_delete_account_title">アカウントを削除</string>
+  <string name="preferences_delete_account_summary">このアプリからアカウントを削除します (Zaif.jp からではありません!)</string>
+  <string name="preferences_labs">これは危険です!!!</string>
+  <string name="preferences_debug_title">デバッグ</string>
+  <string name="preferences_debug_summary">デバッグ オプションを有効にします</string>
+    
+  <string name="bitcointrader_options_donate">寄付する</string>
+  <string name="bitcointrader_options_help">ヘルプ</string>
+
+  <string name="report_issue_dialog_title_crash">前回のクラッシュを検出しました</string>
+  <string name="report_issue_dialog_message_crash">将来この問題の修正に役立つクラッシュ報告を送信してもよろしいですか?</string>
+  <string name="report_issue_dialog_description">問題の説明</string>
+  <string name="report_issue_dialog_report">報告</string>
+  <string name="report_issue_dialog_collect_device_info">デバイス情報を付加</string>
+  <string name="report_issue_dialog_collect_application_log">アプリケーション ログを付加</string>
+  <string name="report_issue_dialog_mail_intent_chooser">報告を送信…</string>
+
+  <string name="button_cancel">キャンセル</string>
+	
+  <string name="widget_accountinfo_name">Bitcoin Trader アカウント情報</string>
+  <string name="widget_priceinfo_name">Bitcoin Trader 価格情報</string>
+  
+  <string name="trailing_stop_loss_title">トレーリング ストップロス</string>
+  <string name="trailing_stop_activate_stop_loss">ストップロスを有効にする</string>
+  <string name="trailing_stop_cancel_stop_loss">ストップロスをキャンセル (%2$s, %1$s</string>
+  <string name="trailing_stop_loss_description">ここにストップロスを入力してください</string>
+  <string name="trailing_stop_loss_perform">有効にする</string>
+  <string name="trailing_stop_loss_wrong_input">入力を検証してください</string>
+  <string name="trailing_stop_loss_submitted">トレーリング ストップロスを作成しました。</string>
+  <string name="trailing_stop_loss_price_description">トレーリング ストップロスのしきい値</string>
+  <string name="trailing_stop_loss_percentage_description">しきい値を調整するパーセント</string>
+  <string name="trailing_stop_loss_updates_description">通知を表示するまでの更新回数または調整したしきい値。</string>
+  <string name="trailing_stop_notify_title">トレーリングストップロスの値に達しました。</string>
+  <string name="trailing_stop_notify_text">%1$s で自動的にビットコインを売りました (リミットは %2$s でした).</string>
+  <string name="trailing_stop_alignment_notify_title">トレーリング ストップロスの価格は新しい値に設定されました</string>
+  <string name="trailing_stop_alignment_notify_text">価格が上がりました。トレーリングストップ価格リミットは %1$s から %2$s に変更されました。</string>
+  <string name="capital_ask">ASK</string>
+  <string name="capital_bid">BID</string>
+  <string name="preferences_warning">警告</string>
+  <string name="developed_by">開発者</string>
+  <string name="version">バージョン</string>
+  <string name="contribution">貢献</string>
+  <string name="specialthanks">謝辞</string>
+  
+</resources>

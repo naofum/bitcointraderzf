@@ -1,0 +1,26 @@
+package com.xeiam.xchange.zaif.v1.dto.trade;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xeiam.xchange.zaif.v1.dto.ZaifResponse;
+
+import java.util.Map;
+
+/**
+ * @author Naofumi Fukue
+ */
+public class ZaifTradesResponse extends ZaifResponse<Map<String, ZaifTrades>> {
+
+  /**
+   * Constructor
+   *
+   * @param success
+   * @param result
+   * @param error
+   */
+  public ZaifTradesResponse(@JsonProperty("success") String success, @JsonProperty("return") Map<String, ZaifTrades> result,
+                            @JsonProperty("error") String error) {
+
+    super(success, result, error);
+  }
+
+}
