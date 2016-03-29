@@ -210,7 +210,7 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
   }
 
   public String getCurrency() {
-    return PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.PREFS_KEY_CURRENCY, "USD");
+    return PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.PREFS_KEY_CURRENCY, "JPY");
   }
 
   private void deleteTrailingStopLoss() {
