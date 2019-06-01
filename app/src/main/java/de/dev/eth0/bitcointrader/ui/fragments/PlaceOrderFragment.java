@@ -14,6 +14,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,15 +29,14 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.xeiam.xchange.currency.CurrencyPair;
-import com.xeiam.xchange.dto.Order;
-import com.xeiam.xchange.dto.account.AccountInfo;
-import com.xeiam.xchange.dto.marketdata.Ticker;
-import com.xeiam.xchange.dto.trade.LimitOrder;
-import com.xeiam.xchange.dto.trade.MarketOrder;
+
+import org.knowm.xchange.currency.Currency;
+import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.Order;
+import org.knowm.xchange.dto.account.AccountInfo;
+import org.knowm.xchange.dto.marketdata.Ticker;
+import org.knowm.xchange.dto.trade.LimitOrder;
+import org.knowm.xchange.dto.trade.MarketOrder;
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import de.dev.eth0.bitcointrader.Constants;
 import com.github.naofum.bitcointraderzf.R;
@@ -243,7 +245,7 @@ public class PlaceOrderFragment extends AbstractBitcoinTraderFragment {
         if (accountInfo != null) {
 //          AccountInfo accountInfo = MtGoxAdapters.adaptAccountInfo(accountInfo);
           if (accountInfo != null) {
-            amountView.setAmount(accountInfo.getWallet("BTC").getAvailable());
+            amountView.setAmount(accountInfo.getWallet("BTC").getBalance(Currency.BTC).getAvailable());
           }
         }
       }

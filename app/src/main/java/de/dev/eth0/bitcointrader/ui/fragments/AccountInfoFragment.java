@@ -16,7 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.xeiam.xchange.dto.account.AccountInfo;
+import org.knowm.xchange.currency.Currency;
+import org.knowm.xchange.dto.account.AccountInfo;
 
 import com.github.naofum.bitcointraderzf.R;
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
@@ -110,8 +111,8 @@ public class AccountInfoFragment extends AbstractBitcoinTraderFragment {
       if (accountInfo != null) {
 //        AccountInfo accountInfo = ZaifAdapters.adaptAccountInfo(accountInfo);
         viewName.setText(accountInfo.getUsername());
-        viewDollar.setAmount(BigMoney.of(CurrencyUnit.JPY, accountInfo.getWallet("JPY").getAvailable()));
-        viewBtc.setAmount(BigMoney.of(Constants.BTC, accountInfo.getWallet("BTC").getAvailable()));
+        viewDollar.setAmount(BigMoney.of(CurrencyUnit.JPY, accountInfo.getWallet("JPY").getBalance(Currency.JPY).getAvailable()));
+        viewBtc.setAmount(BigMoney.of(Constants.BTC, accountInfo.getWallet("BTC").getBalance(Currency.BTC).getAvailable()));
         viewTradeFee.setAmount(accountInfo.getTradingFee());
       }
     }

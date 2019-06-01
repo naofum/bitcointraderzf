@@ -3,20 +3,19 @@
 package de.dev.eth0.bitcointrader.ui.views;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
-import android.widget.TextView;
 import de.dev.eth0.bitcointrader.Constants;
 import de.dev.eth0.bitcointrader.util.FormatHelper;
 import de.dev.eth0.bitcointrader.util.FormatHelper.DISPLAY_MODE;
-import java.math.RoundingMode;
 import org.joda.money.BigMoney;
 
 /**
  * @author Alexander Muthmann
  */
-public class CurrencyTextView extends TextView {
+public class CurrencyTextView extends AppCompatTextView {
 
   
   private BigMoney amount = null;

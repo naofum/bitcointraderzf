@@ -4,10 +4,10 @@ package de.dev.eth0.bitcointrader.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.actionbarsherlock.app.ActionBar;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.view.MenuItem;
-import com.xeiam.xchange.dto.Order;
+import org.knowm.xchange.dto.Order;
 import com.github.naofum.bitcointraderzf.R;
 import de.dev.eth0.bitcointrader.ui.fragments.PlaceOrderFragment;
 

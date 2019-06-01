@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatDelegate;
+import android.view.MenuItem;
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import de.dev.eth0.bitcointrader.Constants;
 import com.github.naofum.bitcointraderzf.R;
@@ -18,7 +19,7 @@ import de.schildbach.wallet.integration.android.BitcoinIntegration;
 /**
  * @author Alexander Muthmann
  */
-public class AboutActivity extends SherlockPreferenceActivity {
+public class AboutActivity extends PreferenceActivity {
 
   private static final String KEY_ABOUT_VERSION = "about_version";
   private static final String KEY_ABOUT_AUTHOR = "about_author";
@@ -29,6 +30,8 @@ public class AboutActivity extends SherlockPreferenceActivity {
   private static final String KEY_ABOUT_CREDITS_ZXING = "about_credits_zxing";
   private static final String KEY_ABOUT_CREDITS_GRAPHVIEW = "about_credits_graphview";
   private static final String KEY_ABOUT_DONATE = "about_donate";
+
+  private AppCompatDelegate mDelegate;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -91,5 +94,20 @@ public class AboutActivity extends SherlockPreferenceActivity {
       finish();
     }
     return false;
+  }
+
+  public ActionBar getSupportActionBar() {
+    return getDelegate().getSupportActionBar();
+  }
+
+  public void invalidateOptionsMenu() {
+    getDelegate().invalidateOptionsMenu();
+  }
+
+  private AppCompatDelegate getDelegate() {
+    if (mDelegate == null) {
+      mDelegate = AppCompatDelegate.create(this, null);
+    }
+    return mDelegate;
   }
 }

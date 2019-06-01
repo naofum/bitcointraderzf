@@ -10,20 +10,23 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
 import de.dev.eth0.bitcointrader.Constants;
 import com.github.naofum.bitcointraderzf.R;
 /**
  * @author Alexander Muthmann
  */
-public class PreferencesActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
+public class PreferencesActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
   private static final String KEY_DELETE_ACCOUNT = "delete_account";
+
+  private AppCompatDelegate mDelegate;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -96,5 +99,20 @@ public class PreferencesActivity extends SherlockPreferenceActivity implements O
       finish();
     }
     return false;
+  }
+
+  public ActionBar getSupportActionBar() {
+    return getDelegate().getSupportActionBar();
+  }
+
+  public void invalidateOptionsMenu() {
+    getDelegate().invalidateOptionsMenu();
+  }
+
+  private AppCompatDelegate getDelegate() {
+    if (mDelegate == null) {
+      mDelegate = AppCompatDelegate.create(this, null);
+    }
+    return mDelegate;
   }
 }

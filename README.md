@@ -6,6 +6,13 @@ Unofficial Android Bitcoin trader for [zaif.jp](http://zaif.jp/).
 ## Special Thanks
 This application is based on deveth0's [bitcoincointrader](https://github.com/deveth0/bitcointrader).
 
+## Special Thanks
+Libraly
+- [XChange](https://github.com/knowm/XChange)
+- [bitcoin-wallet](https://github.com/bitcoin-wallet/bitcoin-wallet)
+- [ZXing](https://github.com/zxing/zxing)
+- [GraphView](https://github.com/jjoe64/GraphView/wiki)
+
 ## License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](http://www.gnu.org/licenses/gpl-3.0.en.html)  
 

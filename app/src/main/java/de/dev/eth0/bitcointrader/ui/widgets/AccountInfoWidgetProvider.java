@@ -8,7 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.xeiam.xchange.dto.account.AccountInfo;
+import org.knowm.xchange.currency.Currency;
+import org.knowm.xchange.dto.account.AccountInfo;
 
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import de.dev.eth0.bitcointrader.Constants;
@@ -43,8 +44,8 @@ public class AccountInfoWidgetProvider extends AbstractWidgetProvider {
 //      AccountInfo accountInfo = MtGoxAdapters.adaptAccountInfo(exchangeService.getAccountInfo());
       AccountInfo accountInfo = exchangeService.getAccountInfo();
 
-      BigMoney btc = BigMoney.of(Constants.BTC, accountInfo.getWallet("BTC").getAvailable());
-      BigMoney usd = BigMoney.of(CurrencyUnit.of("JPY"), accountInfo.getWallet("JPY").getAvailable());
+      BigMoney btc = BigMoney.of(Constants.BTC, accountInfo.getWallet("BTC").getBalance(Currency.BTC).getAvailable());
+      BigMoney usd = BigMoney.of(CurrencyUnit.of("JPY"), accountInfo.getWallet("JPY").getBalance(Currency.JPY).getAvailable());
 
       if (btc != null && usd != null) {
 

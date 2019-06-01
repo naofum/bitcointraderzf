@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.SpannableStringBuilder;
 import android.widget.RemoteViews;
-import com.xeiam.xchange.dto.marketdata.Ticker;
+import org.knowm.xchange.dto.marketdata.Ticker;
 
 import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
@@ -39,7 +39,7 @@ public class PriceInfoWidgetProvider extends AbstractWidgetProvider {
     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.price_info_widget_content);
     views.setOnClickPendingIntent(R.id.price_info_widget_content,
             PendingIntent.getActivity(context, 0, new Intent(context, StartScreenActivity.class), 0));
-    if (exchangeService != null && exchangeService.getTicker() != null) {
+    if (exchangeService != null && exchangeService.getTicker() != null && exchangeService.getTicker().getLast() != null) {
       views.setOnClickPendingIntent(R.id.price_info_widget_content,
               PendingIntent.getActivity(context, 0, new Intent(context, BitcoinTraderActivity.class), 0));
       Ticker ticker = exchangeService.getTicker();

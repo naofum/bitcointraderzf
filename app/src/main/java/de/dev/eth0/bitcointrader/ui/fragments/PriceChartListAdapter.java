@@ -5,7 +5,7 @@ package de.dev.eth0.bitcointrader.ui.fragments;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.xeiam.xchange.bitcoincharts.dto.marketdata.BitcoinChartsTicker;
+import org.knowm.xchange.bitcoincharts.dto.marketdata.BitcoinChartsTicker;
 import com.github.naofum.bitcointraderzf.R;
 import de.dev.eth0.bitcointrader.ui.AbstractBitcoinTraderActivity;
 import de.dev.eth0.bitcointrader.ui.views.AmountTextView;

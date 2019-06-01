@@ -3,6 +3,7 @@
 package de.dev.eth0.bitcointrader.service;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -15,6 +16,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcelable;
@@ -27,30 +29,31 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.xeiam.xchange.currency.CurrencyPair;
-import com.xeiam.xchange.dto.marketdata.Trade;
-import com.xeiam.xchange.dto.trade.UserTrade;
-import com.xeiam.xchange.dto.trade.UserTrades;
-import com.xeiam.xchange.exceptions.ExchangeException;
-import com.xeiam.xchange.ExchangeFactory;
-import com.xeiam.xchange.ExchangeSpecification;
-import com.xeiam.xchange.dto.Order;
-import com.xeiam.xchange.dto.account.AccountInfo;
-import com.xeiam.xchange.dto.marketdata.OrderBook;
-import com.xeiam.xchange.dto.marketdata.Ticker;
-import com.xeiam.xchange.dto.marketdata.Trades;
-import com.xeiam.xchange.dto.trade.LimitOrder;
-import com.xeiam.xchange.dto.trade.MarketOrder;
-import com.xeiam.xchange.service.polling.trade.params.DefaultTradeHistoryParamCurrencyPair;
-import com.xeiam.xchange.service.polling.trade.params.TradeHistoryParamCurrencyPair;
-import com.xeiam.xchange.zaif.v1.ZaifExchange;
-import com.xeiam.xchange.zaif.v1.dto.ZaifValue;
-import com.xeiam.xchange.zaif.v1.dto.account.ZaifWallet;
+import org.knowm.xchange.currency.Currency;
+import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.marketdata.Trade;
+import org.knowm.xchange.dto.trade.UserTrade;
+import org.knowm.xchange.dto.trade.UserTrades;
+import org.knowm.xchange.exceptions.ExchangeException;
+import org.knowm.xchange.ExchangeFactory;
+import org.knowm.xchange.ExchangeSpecification;
+import org.knowm.xchange.dto.Order;
+import org.knowm.xchange.dto.account.AccountInfo;
+import org.knowm.xchange.dto.marketdata.OrderBook;
+import org.knowm.xchange.dto.marketdata.Ticker;
+import org.knowm.xchange.dto.marketdata.Trades;
+import org.knowm.xchange.dto.trade.LimitOrder;
+import org.knowm.xchange.dto.trade.MarketOrder;
+import org.knowm.xchange.service.trade.params.DefaultTradeHistoryParamCurrencyPair;
+import org.knowm.xchange.service.trade.params.TradeHistoryParamCurrencyPair;
+import org.knowm.xchange.zaif.ZaifExchange;
+import org.knowm.xchange.zaif.dto.ZaifValue;
+import org.knowm.xchange.zaif.dto.account.ZaifWallet;
 import de.dev.eth0.bitcointrader.dto.ZaifWalletHistory;
 import de.dev.eth0.bitcointrader.dto.ZaifWalletHistoryEntry;
 
-import com.xeiam.xchange.zaif.v1.dto.trade.ZaifTrades;
-import com.xeiam.xchange.zaif.v1.service.polling.ZaifTradeService;
+import org.knowm.xchange.zaif.dto.trade.ZaifTrades;
+import org.knowm.xchange.zaif.service.ZaifTradeService;
 
 import de.dev.eth0.bitcointrader.Constants;
 import com.github.naofum.bitcointraderzf.R;
@@ -122,6 +125,26 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // API 26
+      String channelId = "ExchangeService";
+      NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
+              .setContentTitle(getString(R.string.loading_info))
+              .setContentText("")
+              .setSmallIcon(R.drawable.app_icon)
+              .setChannelId(channelId);
+
+      CharSequence name = getString(R.string.loading_info);
+      String description = "";
+      int importance = NotificationManager.IMPORTANCE_DEFAULT;
+      NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+      channel.setDescription(description);
+      // Register the channel with the system; you can't change the importance
+      // or other notification behaviors after this
+      NotificationManager notificationManager = getSystemService(NotificationManager.class);
+      notificationManager.createNotificationChannel(channel);
+
+      startForeground(1, builder.build());
+    }
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     prefs.registerOnSharedPreferenceChangeListener(this);
     notifyOnUpdate = prefs.getBoolean(Constants.PREFS_KEY_GENERAL_NOTIFY_ON_UPDATE, false);
@@ -136,34 +159,36 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
     } else {
       trailingStopValue = null;
     }
-    createExchange(prefs);
+//    createExchange(prefs);
+    executeTask(new CreateExchange(), prefs);
     return Service.START_STICKY;
   }
 
-  private void createExchange(SharedPreferences prefs) {
-    String zaifAPIKey, zaifSecretKey;
-    if (prefs.getBoolean(Constants.PREFS_KEY_DEMO, false)) {
-      zaifAPIKey = Constants.ZAIF_DEMO_ACCOUNT_APIKEY;
-      zaifSecretKey = Constants.ZAIF_DEMO_ACCOUNT_SECRETKEY;
-    } else {
-      zaifAPIKey = prefs.getString(Constants.PREFS_KEY_ZAIF_APIKEY, null);
-      zaifSecretKey = prefs.getString(Constants.PREFS_KEY_ZAIF_SECRETKEY, null);
-    }
-    if (!TextUtils.isEmpty(zaifAPIKey) && !TextUtils.isEmpty(zaifSecretKey)) {
-      ExchangeSpecification exchangeSpec = new ExchangeSpecification(ZaifExchange.class);
-      exchangeSpec.setApiKey(zaifAPIKey);
-      exchangeSpec.setSecretKey(zaifSecretKey);
-      exchangeSpec.setSslUri(Constants.ZAIF_SSL_URI);
-      exchangeSpec.setPlainTextUriStreaming(Constants.MTGOX_PLAIN_WEBSOCKET_URI);
-      exchangeSpec.setSslUriStreaming(Constants.MTGOX_SSL_WEBSOCKET_URI);
-      exchange = (ZaifExchange) ExchangeFactory.INSTANCE.createExchange(exchangeSpec);
-      broadcastUpdate();
-    }
-  }
+//  private void createExchange(SharedPreferences prefs) {
+//    String zaifAPIKey, zaifSecretKey;
+//    if (prefs.getBoolean(Constants.PREFS_KEY_DEMO, false)) {
+//      zaifAPIKey = Constants.ZAIF_DEMO_ACCOUNT_APIKEY;
+//      zaifSecretKey = Constants.ZAIF_DEMO_ACCOUNT_SECRETKEY;
+//    } else {
+//      zaifAPIKey = prefs.getString(Constants.PREFS_KEY_ZAIF_APIKEY, null);
+//      zaifSecretKey = prefs.getString(Constants.PREFS_KEY_ZAIF_SECRETKEY, null);
+//    }
+//    if (!TextUtils.isEmpty(zaifAPIKey) && !TextUtils.isEmpty(zaifSecretKey)) {
+//      ExchangeSpecification exchangeSpec = new ExchangeSpecification(ZaifExchange.class);
+//      exchangeSpec.setApiKey(zaifAPIKey);
+//      exchangeSpec.setSecretKey(zaifSecretKey);
+//      exchangeSpec.setSslUri(Constants.ZAIF_SSL_URI);
+////      exchangeSpec.setPlainTextUriStreaming(Constants.MTGOX_PLAIN_WEBSOCKET_URI);
+////      exchangeSpec.setSslUriStreaming(Constants.MTGOX_SSL_WEBSOCKET_URI);
+//      exchange = (ZaifExchange) ExchangeFactory.INSTANCE.createExchange(exchangeSpec);
+//      broadcastUpdate();
+//    }
+//  }
 
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     if (key.equals(Constants.PREFS_KEY_ZAIF_APIKEY) || key.equals(Constants.PREFS_KEY_ZAIF_SECRETKEY)) {
-      createExchange(sharedPreferences);
+//      createExchange(sharedPreferences);
+      executeTask(new CreateExchange(), sharedPreferences);
     } else if (key.equals(Constants.PREFS_KEY_GENERAL_NOTIFY_ON_UPDATE)) {
       notifyOnUpdate = sharedPreferences.getBoolean(Constants.PREFS_KEY_GENERAL_NOTIFY_ON_UPDATE, false);
     } else if (key.equals(Constants.PREFS_KEY_GENERAL_UPDATE)) {
@@ -227,7 +252,7 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
   }
 
   public OrderBook getOrderBook() throws IOException {
-    return getExchange().getPollingMarketDataService().getOrderBook(CurrencyPair.BTC_JPY, getCurrency());
+    return getExchange().getMarketDataService().getOrderBook(CurrencyPair.BTC_JPY, getCurrency());
   }
 
   public Map<String, List<ZaifWalletHistory>> getZaifWalletHistory(String[] currencies, boolean forceUpdate, ProgressDialog dialog) {
@@ -258,19 +283,19 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
         List<ZaifWalletHistoryEntry> entries = new ArrayList<ZaifWalletHistoryEntry>();
         TradeHistoryParamCurrencyPair pair = new DefaultTradeHistoryParamCurrencyPair();
         pair.setCurrencyPair(CurrencyPair.BTC_JPY);
-        UserTrades trades = exchange.getPollingTradeService().getTradeHistory(pair);
+        UserTrades trades = exchange.getTradeService().getTradeHistory(pair);
         List<UserTrade> list = trades.getUserTrades();
         for (Trade trade : list) {
           ZaifWalletHistoryEntry entry = new ZaifWalletHistoryEntry(Integer.valueOf(trade.getId()),
                   String.valueOf(trade.getTimestamp().getTime() / 1000), trade.getType().equals(Order.OrderType.BID) ? "spent" : "earned",
-                  trade.getType().equals(Order.OrderType.BID) ? "* BTC bought: " + trade.getTradableAmount().toString() + " at " + trade.getPrice().toString() : "* BTC sold: " + trade.getTradableAmount().toString() + " at " + trade.getPrice().toString(), new String[0],
-                  new ZaifValue(trade.getPrice().multiply(trade.getTradableAmount()), BigDecimal.ZERO, BigDecimal.ZERO),
+                  trade.getType().equals(Order.OrderType.BID) ? "* BTC bought: " + trade.getOriginalAmount().toString() + " at " + trade.getPrice().toString() : "* BTC sold: " + trade.getOriginalAmount().toString() + " at " + trade.getPrice().toString(), new String[0],
+                  new ZaifValue(trade.getPrice().multiply(trade.getOriginalAmount()), BigDecimal.ZERO, BigDecimal.ZERO),
                   new ZaifValue(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO),
-                  new ZaifWalletHistoryEntry.ZaifWalletHistoryEntryTrade(trade.getId(), "tid", "app", "properties", new ZaifValue(trade.getPrice(), trade.getTradableAmount(), BigDecimal.ZERO)));
+                  new ZaifWalletHistoryEntry.ZaifWalletHistoryEntryTrade(trade.getId(), "tid", "app", "properties", new ZaifValue(trade.getPrice(), trade.getOriginalAmount(), BigDecimal.ZERO)));
           entries.add(entry);
         }
 
-        ZaifWallet[] wallets = ((ZaifTradeService)exchange.getPollingTradeService()).getDepositHistory(pair);
+        ZaifWallet[] wallets = ((ZaifTradeService)exchange.getTradeService()).getDepositHistory(pair);
         for (int j = 0; j < wallets.length; j++) {
           ZaifWalletHistoryEntry entry = new ZaifWalletHistoryEntry(Integer.valueOf(wallets[j].getId()),
                   String.valueOf(wallets[j].getTimestamp().longValue()), "in", "", new String[0],
@@ -280,7 +305,7 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
           entries.add(entry);
         }
 
-        wallets = ((ZaifTradeService)exchange.getPollingTradeService()).getWithdrawHistory(pair);
+        wallets = ((ZaifTradeService)exchange.getTradeService()).getWithdrawHistory(pair);
         for (int j = 0; j < wallets.length; j++) {
           ZaifWalletHistoryEntry entry = new ZaifWalletHistoryEntry(Integer.valueOf(wallets[j].getId()),
                   String.valueOf(wallets[j].getTimestamp().longValue()), "out", "", new String[0],
@@ -328,7 +353,7 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
   }
 
   public Trades getTrades() throws IOException {
-    return exchange.getPollingMarketDataService().getTrades(CurrencyPair.BTC_JPY, getCurrency());
+    return exchange.getMarketDataService().getTrades(CurrencyPair.BTC_JPY, getCurrency());
   }
 
   public AccountInfo getAccountInfo() {
@@ -398,7 +423,7 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
     for (Order lo : openOrders) {
       try {
 //        Collection<Order> result = ((ZaifTradeService)exchange.getPollingTradeService()).getOrder(lo.getId());
-        ZaifTrades[] trades = ((ZaifTradeService)exchange.getPollingTradeService()).getZaifOpenOrders();
+        ZaifTrades[] trades = ((ZaifTradeService)exchange.getTradeService()).getZaifOpenOrders();
         BigDecimal avg = BigDecimal.ZERO;
         BigDecimal total = BigDecimal.ZERO;
         BigDecimal spent = BigDecimal.ZERO;
@@ -410,14 +435,14 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
           }
         }
         Bundle bundle = new Bundle();
-        BigMoney amount = BigMoney.parse(lo.getCurrencyPair().counterSymbol + " " + avg.toString());
+        BigMoney amount = BigMoney.parse(lo.getCurrencyPair().counter.getSymbol() + " " + avg.toString());
 
         bundle.putString(Constants.EXTRA_ORDERRESULT_AVGCOST, FormatHelper.formatBigMoney(
                 FormatHelper.DISPLAY_MODE.CURRENCY_CODE, amount, Constants.PRECISION_BITCOIN).toString());
-        amount = BigMoney.parse(lo.getCurrencyPair().counterSymbol + " " + total.toString());
+        amount = BigMoney.parse(lo.getCurrencyPair().counter.getSymbol() + " " + total.toString());
         bundle.putString(Constants.EXTRA_ORDERRESULT_TOTALAMOUNT, FormatHelper.formatBigMoney(
                 FormatHelper.DISPLAY_MODE.CURRENCY_CODE, amount, Constants.PRECISION_BITCOIN).toString());
-        amount = BigMoney.parse(lo.getCurrencyPair().counterSymbol + " " + spent.toString());
+        amount = BigMoney.parse(lo.getCurrencyPair().counter.getSymbol() + " " + spent.toString());
         bundle.putString(Constants.EXTRA_ORDERRESULT_TOTALSPENT, FormatHelper.formatBigMoney(
                 FormatHelper.DISPLAY_MODE.CURRENCY_CODE, amount, Constants.PRECISION_CURRENCY).toString());
         extras.add(bundle);
@@ -432,25 +457,57 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
     }
   }
 
+  private class CreateExchange extends ICSAsyncTask<SharedPreferences, Void, Boolean> {
+
+    @Override
+    protected Boolean doInBackground(SharedPreferences... sharedPreferences) {
+      Log.d(TAG, "getting metadata...");
+      createExchange(sharedPreferences[0]);
+      return true;
+    }
+
+    private void createExchange(SharedPreferences prefs) {
+      String zaifAPIKey, zaifSecretKey;
+      if (prefs.getBoolean(Constants.PREFS_KEY_DEMO, false)) {
+        zaifAPIKey = Constants.ZAIF_DEMO_ACCOUNT_APIKEY;
+        zaifSecretKey = Constants.ZAIF_DEMO_ACCOUNT_SECRETKEY;
+      } else {
+        zaifAPIKey = prefs.getString(Constants.PREFS_KEY_ZAIF_APIKEY, null);
+        zaifSecretKey = prefs.getString(Constants.PREFS_KEY_ZAIF_SECRETKEY, null);
+      }
+      if (!TextUtils.isEmpty(zaifAPIKey) && !TextUtils.isEmpty(zaifSecretKey)) {
+        ExchangeSpecification exchangeSpec = new ExchangeSpecification(ZaifExchange.class);
+        exchangeSpec.setApiKey(zaifAPIKey);
+        exchangeSpec.setSecretKey(zaifSecretKey);
+        exchangeSpec.setSslUri(Constants.ZAIF_SSL_URI);
+//      exchangeSpec.setPlainTextUriStreaming(Constants.MTGOX_PLAIN_WEBSOCKET_URI);
+//      exchangeSpec.setSslUriStreaming(Constants.MTGOX_SSL_WEBSOCKET_URI);
+        exchange = (ZaifExchange) ExchangeFactory.INSTANCE.createExchange(exchangeSpec);
+        broadcastUpdate();
+      }
+    }
+
+  }
+
   private class UpdateTask extends ICSAsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
       Log.d(TAG, "performing update...");
       try {
-        accountInfo = exchange.getPollingAccountService().getAccountInfo();
-        ticker = exchange.getPollingMarketDataService().getTicker(CurrencyPair.BTC_JPY, getCurrency());
+        accountInfo = exchange.getAccountService().getAccountInfo();
+        ticker = exchange.getMarketDataService().getTicker(CurrencyPair.BTC_JPY, getCurrency());
         checkTrailingStop();
 
         if (TextUtils.isEmpty(getCurrency())) {
 //          setCurrency(accountInfo.getWallet().getId());
           setCurrency("JPY");
         }
-        List<LimitOrder> orders = exchange.getPollingTradeService().getOpenOrders().getOpenOrders();
+        List<LimitOrder> orders = exchange.getTradeService().getOpenOrders().getOpenOrders();
         openOrders.removeAll(orders);
         // Order executed
         if (!openOrders.isEmpty()) {
-//          broadcastOrderExecuted(openOrders);
+          broadcastOrderExecuted(openOrders);
         }
         openOrders = orders;
         lastUpdate = new Date();
@@ -502,7 +559,7 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
           if (prefs.getBoolean(Constants.PREFS_KEY_TRAILING_STOP_SELLING_ENABLED, false)) {
             Log.d(TAG, "selling is enabled, selling btc");
             AccountInfo accountInfo = getAccountInfo();
-            Order marketOrder = new MarketOrder(Order.OrderType.ASK, accountInfo.getWallet("BTC").getAvailable(), new CurrencyPair(getCurrency()), new Date());
+            Order marketOrder = new MarketOrder(Order.OrderType.ASK, accountInfo.getWallet("BTC").getBalance(new Currency("BTC")).getAvailable(), new CurrencyPair(getCurrency()), new Date());
             placeOrder(marketOrder, null);
           }
           return;
@@ -563,7 +620,7 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
       Log.d(TAG, "Deleting order");
       try {
         if (params.length == 1) {
-          boolean ret = exchange.getPollingTradeService().cancelOrder(params[0].getId());
+          boolean ret = exchange.getTradeService().cancelOrder(params[0].getId());
           lastUpdate = new Date();
           broadcastUpdate();
           return ret;
@@ -641,13 +698,13 @@ public class ExchangeService extends Service implements SharedPreferences.OnShar
             Order order = params[0];
             if (order instanceof MarketOrder) {
               MarketOrder mo = (MarketOrder) order;
-              orderId = exchange.getPollingTradeService().placeMarketOrder(mo);
+              orderId = exchange.getTradeService().placeMarketOrder(mo);
               List<MarketOrder> list = new ArrayList<MarketOrder>();
               list.add(mo);
-//              broadcastOrderExecuted(list);
+              broadcastOrderExecuted(list);
             } else if (order instanceof LimitOrder) {
               LimitOrder lo = (LimitOrder) order;
-              orderId = exchange.getPollingTradeService().placeLimitOrder(lo);
+              orderId = exchange.getTradeService().placeLimitOrder(lo);
             }
             lastUpdate = new Date();
             broadcastUpdateSuccess();

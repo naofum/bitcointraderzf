@@ -10,14 +10,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.xeiam.xchange.dto.Order;
+import org.knowm.xchange.dto.Order;
 import com.github.naofum.bitcointraderzf.R;
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import de.dev.eth0.bitcointrader.Constants;
@@ -28,7 +28,7 @@ import java.util.Set;
 /**
  * @author Alexander Muthmann
  */
-public class OrderListFragment extends SherlockListFragment {
+public class OrderListFragment extends ListFragment {
 
   private static final String TAG = OrderListFragment.class.getSimpleName();
   private BitcoinTraderApplication application;

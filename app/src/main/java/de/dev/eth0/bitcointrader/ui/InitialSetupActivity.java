@@ -11,24 +11,24 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.xeiam.xchange.Exchange;
-import com.xeiam.xchange.exceptions.ExchangeException;
-import com.xeiam.xchange.ExchangeFactory;
-import com.xeiam.xchange.ExchangeSpecification;
-import com.xeiam.xchange.dto.account.AccountInfo;
-import com.xeiam.xchange.zaif.v1.ZaifExchange;
+import org.knowm.xchange.Exchange;
+import org.knowm.xchange.exceptions.ExchangeException;
+import org.knowm.xchange.ExchangeFactory;
+import org.knowm.xchange.ExchangeSpecification;
+import org.knowm.xchange.dto.account.AccountInfo;
+import org.knowm.xchange.zaif.ZaifExchange;
 
 import com.github.naofum.bitcointraderzf.R;
 import de.dev.eth0.bitcointrader.Constants;
@@ -143,7 +143,8 @@ public class InitialSetupActivity extends AbstractBitcoinTraderActivity {
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
-    getSupportMenuInflater().inflate(R.menu.initialsetup_options, menu);
+//    getSupportMenuInflater().inflate(R.menu.initialsetup_options, menu);
+    getMenuInflater().inflate(R.menu.initialsetup_options, menu);
     return true;
   }
 
@@ -348,10 +349,10 @@ public class InitialSetupActivity extends AbstractBitcoinTraderActivity {
         exchangeSpec.setApiKey(key);
         exchangeSpec.setSecretKey(secretKey);
         exchangeSpec.setSslUri(Constants.ZAIF_SSL_URI);
-        exchangeSpec.setPlainTextUriStreaming(Constants.MTGOX_PLAIN_WEBSOCKET_URI);
-        exchangeSpec.setSslUriStreaming(Constants.MTGOX_SSL_WEBSOCKET_URI);
+//        exchangeSpec.setPlainTextUriStreaming(Constants.MTGOX_PLAIN_WEBSOCKET_URI);
+//        exchangeSpec.setSslUriStreaming(Constants.MTGOX_SSL_WEBSOCKET_URI);
         Exchange exchange = (ZaifExchange)ExchangeFactory.INSTANCE.createExchange(exchangeSpec);
-        accountInfo = exchange.getPollingAccountService().getAccountInfo();
+        accountInfo = exchange.getAccountService().getAccountInfo();
       }
       catch (Exception e) {
         Log.i(TAG, "Exception", e);

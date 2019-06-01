@@ -23,6 +23,9 @@ import com.google.android.gms.ads.InterstitialAd;
 
 import com.github.naofum.bitcointraderzf.R;
 import de.dev.eth0.bitcointrader.Constants;
+import de.dev.eth0.bitcointrader.service.AutoUpdateBroadcastReceiver;
+import de.dev.eth0.bitcointrader.service.NotificationBroadcastReceiver;
+import de.dev.eth0.bitcointrader.ui.widgets.AccountInfoWidgetProvider;
 
 /**
  * @author Alexander Muthmann
@@ -33,6 +36,8 @@ public class StartScreenActivity extends AbstractBitcoinTraderActivity {
   private static final String TAG = StartScreenActivity.class.getSimpleName();
   private ProgressDialog mDialog;
   private BroadcastReceiver broadcastReceiver;
+  private BroadcastReceiver broadcastReceiver2;
+  private BroadcastReceiver broadcastReceiver3;
   private LocalBroadcastManager broadcastManager;
   private AlertDialog alertDialog;
 
@@ -135,6 +140,21 @@ public class StartScreenActivity extends AbstractBitcoinTraderActivity {
         broadcastManager = LocalBroadcastManager.getInstance(getBitcoinTraderApplication());
         broadcastManager.registerReceiver(broadcastReceiver, new IntentFilter(Constants.UPDATE_SUCCEDED));
         broadcastManager.registerReceiver(broadcastReceiver, new IntentFilter(Constants.UPDATE_FAILED));
+
+        broadcastReceiver2 = new AutoUpdateBroadcastReceiver();
+        registerReceiver(broadcastReceiver2, new IntentFilter(Constants.UPDATE_SUCCEDED));
+        registerReceiver(broadcastReceiver2, new IntentFilter(Constants.UPDATE_FAILED));
+        registerReceiver(broadcastReceiver2, new IntentFilter(Constants.UPDATE_SERVICE_ACTION));
+        registerReceiver(broadcastReceiver2, new IntentFilter(Constants.CURRENCY_CHANGE_EVENT));
+        registerReceiver(broadcastReceiver2, new IntentFilter(Constants.TRAILING_LOSS_EVENT));
+        registerReceiver(broadcastReceiver2, new IntentFilter(Constants.TRAILING_LOSS_ALIGNMENT_EVENT));
+
+        broadcastReceiver3 = new NotificationBroadcastReceiver();
+        registerReceiver(broadcastReceiver3, new IntentFilter(Constants.UPDATE_SUCCEDED));
+        registerReceiver(broadcastReceiver3, new IntentFilter(Constants.UPDATE_FAILED));
+        registerReceiver(broadcastReceiver3, new IntentFilter(Constants.ORDER_EXECUTED));
+        registerReceiver(broadcastReceiver3, new IntentFilter(Constants.TRAILING_LOSS_EVENT));
+        registerReceiver(broadcastReceiver3, new IntentFilter(Constants.TRAILING_LOSS_ALIGNMENT_EVENT));
       }
     }
   }
@@ -145,6 +165,14 @@ public class StartScreenActivity extends AbstractBitcoinTraderActivity {
     if (broadcastReceiver != null) {
       broadcastManager.unregisterReceiver(broadcastReceiver);
       broadcastReceiver = null;
+    }
+    if (broadcastReceiver2 != null) {
+      broadcastManager.unregisterReceiver(broadcastReceiver2);
+      broadcastReceiver2 = null;
+    }
+    if (broadcastReceiver3 != null) {
+      broadcastManager.unregisterReceiver(broadcastReceiver3);
+      broadcastReceiver3 = null;
     }
   }
 

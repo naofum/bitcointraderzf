@@ -5,13 +5,14 @@
           android:versionCode="32"
           android:versionName="0.1.4" >
 
-  <uses-sdk
-    android:minSdkVersion="10"
-    android:targetSdkVersion="19"/>
+  <!-- uses-sdk
+    android:minSdkVersion="21"
+    android:targetSdkVersion="27"/ -->
 
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.VIBRATE" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <!-- uses-permission android:name="android.permission.FOREGROUND_SERVICE"/  -->
 
   <uses-feature
     android:name="android.hardware.camera"
@@ -33,7 +34,7 @@
     android:theme="@style/My.Theme" >
 
     <!--This meta-data tag is required to use Google Play Services.-->
-    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+    <!-- meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/ -->
 
     <activity
       android:name="de.dev.eth0.bitcointrader.ui.StartScreenActivity"
@@ -115,7 +116,7 @@
     </receiver>    
     
     <!-- Services etc -->
-    <receiver android:name="de.dev.eth0.bitcointrader.service.AutoUpdateBroadcastReceiver"
+    <!-- receiver android:name="de.dev.eth0.bitcointrader.service.AutoUpdateBroadcastReceiver"
               android:exported="false"    
     >
       <intent-filter>
@@ -126,9 +127,9 @@
         <action android:name="de.dev.eth0.bitcointrader.TRAILING_LOSS_EVENT" />
         <action android:name="de.dev.eth0.bitcointrader.TRAILING_LOSS_ALIGNMENT_EVENT" />
       </intent-filter>
-    </receiver>
+    </receiver -->
     
-    <receiver android:name="de.dev.eth0.bitcointrader.service.NotificationBroadcastReceiver" 
+    <!-- receiver android:name="de.dev.eth0.bitcointrader.service.NotificationBroadcastReceiver"
               android:exported="false"
     >
       <intent-filter>
@@ -138,7 +139,7 @@
         <action android:name="de.dev.eth0.bitcointrader.TRAILING_LOSS_EVENT" />
         <action android:name="de.dev.eth0.bitcointrader.TRAILING_LOSS_ALIGNMENT_EVENT" />
       </intent-filter>
-    </receiver>
+    </receiver -->
     <service
       android:name="de.dev.eth0.bitcointrader.service.ExchangeService"
     />

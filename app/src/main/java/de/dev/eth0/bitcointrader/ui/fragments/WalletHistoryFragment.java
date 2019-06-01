@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,10 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Spinner;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.xeiam.xchange.dto.trade.Wallet;
+import org.knowm.xchange.dto.account.Wallet;
 import de.dev.eth0.bitcointrader.dto.ZaifWalletHistory;
 import de.dev.eth0.bitcointrader.dto.ZaifWalletHistoryEntry;
 
@@ -65,12 +65,12 @@ public class WalletHistoryFragment extends AbstractBitcoinTraderFragment {
     int idxCurrentCurrency = Integer.MIN_VALUE;
     int counter = 0;
     if (exchangeService != null && exchangeService.getAccountInfo() != null) {
-      for (Wallet wallet : exchangeService.getAccountInfo().getWallets()) {
-        if (wallet != null && !TextUtils.isEmpty(wallet.getCurrency())) {
-          if (exchangeService.getCurrency().equalsIgnoreCase(wallet.getCurrency())) {
+      for(Map.Entry<String, Wallet> wallet : exchangeService.getAccountInfo().getWallets().entrySet()) {
+        if (wallet != null && !TextUtils.isEmpty(wallet.getKey())) {
+          if (exchangeService.getCurrency().equalsIgnoreCase(wallet.getKey())) {
             idxCurrentCurrency = counter;
           }
-          currencies.add(wallet.getCurrency());
+          currencies.add(wallet.getKey());
           counter++;
         }
       }

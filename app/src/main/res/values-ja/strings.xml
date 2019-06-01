@@ -19,9 +19,9 @@
   <string name="order_delete_failed">注文の削除に失敗しました</string>
 
   <string name="initial_setup_headline">初期設定</string>
-  <string name="initial_setup_info_text">このアプリを使用するには、Zaif.jp のアカウントで接続する必要があります。\nzaif.jp (<a href="https://zaif.jp/api_keys">https://zaif.jp/api_keys</a>) の \"アカウント\" - \"API Keys\" にある 2 つの項目を使用します。\n\"Info\" と \"Trade\" の権限を設定する必要があります。</string>
-  <string name="initial_setup_manual_qrinfo">QR コードをクリックして \"アプリケーション アクセス\" キーをスキャンするか、直接入力してください</string>
-  <string name="initial_setup_manual_info">または \"拡張 API キー生成\" で生成されたキーペアを入力します</string>
+  <string name="initial_setup_info_text">このアプリを使用するには、Zaif.jp のアカウントで接続する必要があります。\nzaif.jp (<a href="https://zaif.jp/api_keys">https://zaif.jp/api_keys</a>) の "アカウント" - "API Keys" にある 2 つの項目を使用します。\n"Info" と "Trade" の権限を設定する必要があります。</string>
+  <string name="initial_setup_manual_qrinfo">QR コードをクリックして "アプリケーション アクセス" キーをスキャンするか、直接入力してください</string>
+  <string name="initial_setup_manual_info">または "拡張 API キー生成" で生成されたキーペアを入力します</string>
   <string name="initial_setup_manual_setupbutton">実行</string>
   <string name="initial_setup_manual_key_label">キー</string>
   <string name="initial_setup_manual_secretkey_label">シークレットキー</string>

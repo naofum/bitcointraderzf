@@ -9,18 +9,16 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.xeiam.xchange.dto.account.AccountInfo;
-import com.xeiam.xchange.dto.marketdata.Ticker;
-import com.xeiam.xchange.zaif.v1.dto.marketdata.ZaifTicker;
+import org.knowm.xchange.dto.marketdata.Ticker;
 
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import de.dev.eth0.bitcointrader.Constants;
@@ -30,8 +28,6 @@ import de.dev.eth0.bitcointrader.ui.views.CurrencyAmountView;
 import de.schildbach.wallet.ui.HelpDialogFragment;
 import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
-
-import java.math.BigDecimal;
 
 /**
  *

@@ -3,9 +3,9 @@
 package de.dev.eth0.bitcointrader.ui;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import de.dev.eth0.bitcointrader.Constants;
 import com.github.naofum.bitcointraderzf.R;
@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * @author Alexander Muthmann
  */
-public abstract class AbstractBitcoinTraderActivity extends SherlockFragmentActivity {
+public abstract class AbstractBitcoinTraderActivity extends AppCompatActivity {
 
   private static final String TAG = AbstractBitcoinTraderActivity.class.getSimpleName();
   private BitcoinTraderApplication application;

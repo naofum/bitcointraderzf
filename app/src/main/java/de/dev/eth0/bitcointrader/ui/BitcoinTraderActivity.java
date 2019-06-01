@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.xeiam.xchange.dto.trade.Wallet;
+import org.knowm.xchange.dto.account.Wallet;
 import de.dev.eth0.bitcointrader.Constants;
 import com.github.naofum.bitcointraderzf.R;
+
+import java.util.Map;
+
 import de.schildbach.wallet.integration.android.BitcoinIntegration;
 import de.schildbach.wallet.ui.HelpDialogFragment;
 /**
@@ -55,7 +58,8 @@ public class BitcoinTraderActivity extends AbstractBitcoinTraderActivity {
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
-    getSupportMenuInflater().inflate(R.menu.bitcointrader_options, menu);
+//    getSupportMenuInflater().inflate(R.menu.bitcointrader_options, menu);
+    getMenuInflater().inflate(R.menu.bitcointrader_options, menu);
 
     selectCurrencyItem = menu.findItem(R.id.bitcointrader_options_select_currency).getSubMenu();
     selectCurrencyItem.clear();
@@ -105,12 +109,12 @@ public class BitcoinTraderActivity extends AbstractBitcoinTraderActivity {
     if (selectCurrencyItem.size() == 0) {
       int idx = 0;
       if (getExchangeService() != null && getExchangeService().getAccountInfo() != null) {
-        for (Wallet wallet : getExchangeService().getAccountInfo().getWallets()) {
-          if (wallet != null && wallet.getBalance() != null
-                  && !TextUtils.isEmpty(wallet.getCurrency())
-                  && !wallet.getCurrency().equals(Constants.CURRENCY_CODE_MONACOIN)
-                  && !wallet.getCurrency().equals(Constants.CURRENCY_CODE_BITCOIN)) {
-            MenuItem mi = selectCurrencyItem.add(Menu.NONE, idx++, Menu.NONE, wallet.getCurrency());
+        for (Map.Entry<String, Wallet> wallet : getExchangeService().getAccountInfo().getWallets().entrySet()) {
+          if (wallet != null && wallet.getValue() != null
+                  && !TextUtils.isEmpty(wallet.getKey())
+                  && !wallet.getKey().equals(Constants.CURRENCY_CODE_MONACOIN)
+                  && !wallet.getKey().equals(Constants.CURRENCY_CODE_BITCOIN)) {
+            MenuItem mi = selectCurrencyItem.add(Menu.NONE, idx++, Menu.NONE, wallet.getKey());
             mi.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
               public boolean onMenuItemClick(MenuItem item) {
                 getExchangeService().setCurrency(item.getTitle().toString());

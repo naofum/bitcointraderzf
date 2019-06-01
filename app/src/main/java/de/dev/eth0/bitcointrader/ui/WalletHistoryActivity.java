@@ -3,9 +3,9 @@
 package de.dev.eth0.bitcointrader.ui;
 
 import android.os.Bundle;
-import com.actionbarsherlock.app.ActionBar;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.github.naofum.bitcointraderzf.R;
 /**
  *

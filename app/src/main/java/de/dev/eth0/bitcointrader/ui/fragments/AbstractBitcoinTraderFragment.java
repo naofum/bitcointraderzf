@@ -3,7 +3,8 @@
 package de.dev.eth0.bitcointrader.ui.fragments;
 
 import android.app.Activity;
-import com.actionbarsherlock.app.SherlockFragment;
+import android.support.v4.app.Fragment;
+
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import com.github.naofum.bitcointraderzf.R;
 import de.dev.eth0.bitcointrader.service.ExchangeService;
@@ -12,7 +13,7 @@ import de.dev.eth0.bitcointrader.ui.AbstractBitcoinTraderActivity;
 /**
  * @author Alexander Muthmann
  */
-public abstract class AbstractBitcoinTraderFragment extends SherlockFragment {
+public abstract class AbstractBitcoinTraderFragment extends Fragment {
 
   private AbstractBitcoinTraderActivity activity;
   private BitcoinTraderApplication application;

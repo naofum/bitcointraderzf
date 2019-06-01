@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -104,7 +105,11 @@ public class BitcoinTraderApplication extends Application implements SharedPrefe
   public void startExchangeService() {
     serviceBound = true;
     this.bindService(exchangeServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-    startService(exchangeServiceIntent);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // API26
+      startForegroundService(exchangeServiceIntent);
+    } else {
+      startService(exchangeServiceIntent);
+    }
   }
 
   public void stopExchangeService() {

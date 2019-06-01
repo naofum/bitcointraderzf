@@ -9,9 +9,9 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import com.xeiam.xchange.dto.Order;
-import com.xeiam.xchange.dto.Order.OrderType;
-import com.xeiam.xchange.dto.trade.LimitOrder;
+import org.knowm.xchange.dto.Order;
+import org.knowm.xchange.dto.Order.OrderType;
+import org.knowm.xchange.dto.trade.LimitOrder;
 
 import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
@@ -51,7 +51,7 @@ public class OrderListAdapter extends AbstractListAdapter<Order> {
 
     // amount
     AmountTextView rowAmount = (AmountTextView) row.findViewById(R.id.order_row_amount);
-    rowAmount.setAmount(order.getTradableAmount());
+    rowAmount.setAmount(order.getOriginalAmount());
     rowAmount.setPrecision(Constants.PRECISION_BITCOIN);
     // value
     CurrencyTextView rowValue = (CurrencyTextView) row.findViewById(R.id.order_row_value);
@@ -61,7 +61,7 @@ public class OrderListAdapter extends AbstractListAdapter<Order> {
     if (order instanceof LimitOrder) {
       LimitOrder lo = (LimitOrder) order;
       rowValue.setAmount(BigMoney.of(CurrencyUnit.of("JPY"), lo.getLimitPrice()));
-      rowTotal.setAmount(BigMoney.of(CurrencyUnit.of("JPY"), lo.getLimitPrice().multiply(order.getTradableAmount())));
+      rowTotal.setAmount(BigMoney.of(CurrencyUnit.of("JPY"), lo.getLimitPrice().multiply(order.getOriginalAmount())));
     }
     ImageButton deleteButton = (ImageButton) row.findViewById(R.id.order_row_delete);
     deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +76,7 @@ public class OrderListAdapter extends AbstractListAdapter<Order> {
           public void onClick(DialogInterface dialog, int which) {
           }
         });
-        alertDialogBuilder.setMessage(activity.getString(R.string.button_delete_order_text, order.getType().toString(), order.getTradableAmount()));
+        alertDialogBuilder.setMessage(activity.getString(R.string.button_delete_order_text, order.getType().toString(), order.getOriginalAmount()));
         alertDialogBuilder.create().show();
       }
     });

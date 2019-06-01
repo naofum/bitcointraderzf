@@ -9,18 +9,18 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.GraphViewStyle;
 import com.jjoe64.graphview.LineGraphView;
-import com.xeiam.xchange.dto.marketdata.OrderBook;
-import com.xeiam.xchange.dto.trade.LimitOrder;
+import org.knowm.xchange.dto.marketdata.OrderBook;
+import org.knowm.xchange.dto.trade.LimitOrder;
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import de.dev.eth0.bitcointrader.Constants;
 import com.github.naofum.bitcointraderzf.R;
@@ -158,10 +158,10 @@ public class MarketDepthFragment extends AbstractBitcoinTraderFragment {
       LimitOrder cd = orders.get(i);
       double xValue = Math.round((cd.getLimitPrice().doubleValue()) * 100.0) / 100.0;
       if (!data.containsKey(xValue)) {
-        data.put(xValue, cd.getTradableAmount().doubleValue());
+        data.put(xValue, cd.getOriginalAmount().doubleValue());
       }
       else {
-        data.put(xValue, data.get(xValue) + cd.getTradableAmount().doubleValue());
+        data.put(xValue, data.get(xValue) + cd.getOriginalAmount().doubleValue());
       }
     }
     GraphViewData[] ret = new GraphViewData[data.size()];

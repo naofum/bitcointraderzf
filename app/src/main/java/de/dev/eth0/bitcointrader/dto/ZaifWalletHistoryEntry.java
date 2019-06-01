@@ -1,7 +1,7 @@
 package de.dev.eth0.bitcointrader.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xeiam.xchange.zaif.v1.dto.ZaifValue;
+import org.knowm.xchange.zaif.dto.ZaifValue;
 
 /**
  * Data object representing a Wallet History Entry

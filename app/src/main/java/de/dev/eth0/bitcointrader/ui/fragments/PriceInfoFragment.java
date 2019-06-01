@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.xeiam.xchange.dto.marketdata.Ticker;
+import org.knowm.xchange.dto.marketdata.Ticker;
 
 import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
@@ -106,7 +106,7 @@ public class PriceInfoFragment extends AbstractBitcoinTraderFragment {
     Log.d(TAG, ".updateView");
     if (getExchangeService() != null) {
       Ticker ticker = getExchangeService().getTicker();
-      if (ticker != null) {
+      if (ticker != null && ticker.getLast() != null) {
         viewPriceInfoLow.setAmount(BigMoney.of(CurrencyUnit.JPY, ticker.getLow()));
         viewPriceInfoLow.setDisplayMode(DISPLAY_MODE.CURRENCY_SYMBOL);
         viewPriceInfoLow.setPrefix(activity.getString(R.string.price_info_low_label));

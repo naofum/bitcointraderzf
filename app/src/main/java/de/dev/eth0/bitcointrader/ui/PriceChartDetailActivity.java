@@ -4,8 +4,8 @@ package de.dev.eth0.bitcointrader.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 import com.github.naofum.bitcointraderzf.R;
 import de.dev.eth0.bitcointrader.ui.fragments.PriceChartDetailFragment;
 

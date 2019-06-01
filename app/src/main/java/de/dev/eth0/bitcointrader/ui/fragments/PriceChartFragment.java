@@ -6,19 +6,20 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.xeiam.xchange.bitcoincharts.BitcoinChartsFactory;
-import com.xeiam.xchange.bitcoincharts.dto.marketdata.BitcoinChartsTicker;
+
+import org.knowm.xchange.bitcoincharts.BitcoinCharts;
+import org.knowm.xchange.bitcoincharts.dto.marketdata.BitcoinChartsTicker;
 import de.dev.eth0.bitcointrader.BitcoinTraderApplication;
 import de.dev.eth0.bitcointrader.Constants;
 import com.github.naofum.bitcointraderzf.R;
@@ -30,16 +31,19 @@ import de.dev.eth0.bitcointrader.ui.views.CurrencyTextView;
 import de.dev.eth0.bitcointrader.util.FormatHelper.DISPLAY_MODE;
 import de.dev.eth0.bitcointrader.util.ICSAsyncTask;
 import de.schildbach.wallet.ui.HelpDialogFragment;
+import si.mazi.rescu.RestProxyFactory;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import org.joda.money.BigMoney;
+import org.knowm.xchange.bitcoincharts.service.BitcoinChartsMarketDataService;
 
 /**
  * @author Alexander Muthmann
  */
-public class PriceChartFragment extends SherlockListFragment {
+public class PriceChartFragment extends ListFragment {
 
   private static final String TAG = PriceChartFragment.class.getSimpleName();
   private BitcoinTraderApplication application;
@@ -250,7 +254,9 @@ public class PriceChartFragment extends SherlockListFragment {
     @Override
     protected BitcoinChartsTicker[] doInBackground(Void... params) {
       try {
-        BitcoinChartsTicker[] ticker = BitcoinChartsFactory.createInstance().getMarketData();
+        BitcoinCharts charts = RestProxyFactory.createProxy(BitcoinCharts.class, "http://api.bitcoincharts.com");
+//        BitcoinChartsTicker[] ticker = BitcoinChartsFactory.createInstance().getMarketData();
+        BitcoinChartsTicker[] ticker = charts.getMarketData();
         return ticker == null ? new BitcoinChartsTicker[0] : ticker;
       }
       catch (Exception e) {

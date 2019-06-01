@@ -35,7 +35,7 @@
     android:id="@+id/price_info_widget_current"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/font_size_xlarge"
+    android:textSize="@dimen/font_size_normal"
     android:textColor="#eee"
     android:layout_centerHorizontal="true"  />
   <TextView
